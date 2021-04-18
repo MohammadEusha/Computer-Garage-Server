@@ -2,7 +2,7 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const ObjectId = require('mongodb').ObjectId
+const ObjectId = require('mongodb').ObjectID
 const app = express()
 app.use(cors())
 app.use(bodyParser.json())
@@ -29,16 +29,6 @@ client.connect(err => {
 
     console.log('database Connected');
 
-
-    app.patch('/update/:id', (req, res) => {
-        customerServiceCollection.updateOne({ _id: ObjectId(req.params.id) },
-            {
-                $set: { status: req.body.status }
-            })
-            .then(result => {
-                res.send(result.modifiedCount > 0)
-            })
-    })
 
     app.post('/addService', (req, res) => {
         const newService = req.body
@@ -128,6 +118,15 @@ client.connect(err => {
 
     })
 
+    app.patch('/update/:id', (req, res) => {
+        customerServiceCollection.updateOne({ _id: ObjectId(req.params.id) },
+            {
+                $set: { status: req.body.status }
+            })
+            .then(result => {
+                res.send(result.modifiedCount > 0)
+            })
+    })
 
 
     app.delete('/delete/:id', (req, res) => {
